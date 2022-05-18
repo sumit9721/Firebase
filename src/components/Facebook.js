@@ -1,12 +1,17 @@
 import React from "react";
-import { signInWithPopup, FacebookAuthProvider } from "firebase-tools";
-import { authentication } from "../firebase";
-const facebook = () => {
+import firebase from "firebase/app";
+import { useHistory } from "react-router-dom";
+const Facebook = () => {
+  const history = useHistory();
   const signInwithFaccebook = () => {
-    const provider = new FacebookAuthProvider();
-    signInWithPopup(authentication, provider)
+    const provider = new firebase.auth.FacebookAuthProvider();
+    provider.addScope("public_profile");
+    firebase
+      .auth()
+      .signInWithPopup(provider)
       .then((re) => {
         console.log(re);
+        history.replace("/");
       })
       .catch((err) => {
         console.log(err.message);
@@ -15,4 +20,4 @@ const facebook = () => {
   return <button onClick={signInwithFaccebook}>Sign in with facebook</button>;
 };
 
-export default facebook;
+export default Facebook;
